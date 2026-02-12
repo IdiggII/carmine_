@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Bottoni Sì / No</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            font-size: 22px;
+            padding: 15px 30px;
+            cursor: pointer;
+            position: absolute;
+        }
+
+        #btnSi { position: static; }
+        #btnNo { position: static; }
+
+        /* Immagine centrata */
+        #immagine {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            display: none;
+            z-index: 9999;
+            border: 4px solid white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        /* Cuori */
+        .cuore {
+            position: fixed;
+            color: red;
+            font-size: 25px;
+            animation: caduta 2.5s linear forwards;
+            pointer-events: none;
+            z-index: 99999;
+        }
+
+        @keyframes caduta {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Vuoi essere la mia Valentina?</h1>
+
+    <div class="container">
+        <button id="btnSi">Sì</button>
+        <button id="btnNo">No</button>
+    </div>
+
+    <!-- La tua immagine -->
+    <img id="immagine" src="https://file.crescita-personale.it/site/image/hotspot_article_first/12602.jpg" alt="Foto">
+
+    <script>
+        const btnNo = document.getElementById("btnNo");
+        const btnSi = document.getElementById("btnSi");
+        const img = document.getElementById("immagine");
+
+        let firstClick = true;
+
+        btnNo.addEventListener("click", () => {
+
+            if (firstClick) {
+                btnNo.style.position = "absolute";
+                firstClick = false;
+            }
+
+            btnNo.textContent = "Sei sicura?";
+
+            let currentSize = parseInt(window.getComputedStyle(btnNo).fontSize);
+            btnNo.style.fontSize = (currentSize - 6) + "px";
+
+            const maxX = window.innerWidth - btnNo.offsetWidth;
+            const maxY = window.innerHeight - btnNo.offsetHeight;
+
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+
+            btnNo.style.left = randomX + "px";
+            btnNo.style.top = randomY + "px";
+        });
+
+        btnSi.addEventListener("click", () => {
+            img.style.display = "block";
+
+            for (let i = 0; i < 150; i++) {
+                creaCuore();
+            }
+        });
+
+        function creaCuore() {
+            const cuore = document.createElement("div");
+            cuore.classList.add("cuore");
+            cuore.textContent = "❤️";
+
+            cuore.style.left = Math.random() * window.innerWidth + "px";
+            cuore.style.top = "-20px";
+            cuore.style.fontSize = (20 + Math.random() * 30) + "px";
+
+            document.body.appendChild(cuore);
+
+            setTimeout(() => cuore.remove(), 2500);
+        }
+    </script>
+
+</body>
+</html>
